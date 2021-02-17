@@ -25,6 +25,7 @@ public:
     int getdLocal(){return dLocal;};
     string info(int i);
     void imprime();
+    int jaExiste(string pseudo);
 
 
 };

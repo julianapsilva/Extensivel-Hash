@@ -5,30 +5,28 @@
 
 using namespace std;
 
-void insereAleatorias(int n, int b, int m){
+void insere(int n, int b, int m, int padrao){
     Diretorio *diretorio = new Diretorio(b,m);
-
-    for(int i=0;i<n;i++){
-        diretorio->insere(rand() % 1000);
+    int j=0, k=0;
+    for(int i=0;i<n && n<1000;i++){ // ate 1000 tentativas de insercao de chaves diferentes
+        if(diretorio->insere(rand() % 1000, padrao)){  // a insercao ocorreu com sucesso
+                j++;
+        }
+        else{
+             n++;
+             k++; // incrementa quantidade de chaves repetidas
+        }
     }
+    cout<<j << " valores diferentes inseridos com sucesso!" << endl;
+    if(n==1000)
+       cout<<"Nao foi possivel inserir todas as chaves, por favor, tente aumentar o numero de bits!"<<endl;
     cout<< "RESULTADO" << endl;
     diretorio->imprime();
+    diretorio->fatorDeCarga();
+    cout<< "Chaves repetidas geradas nao inseridas: " << k<< endl;
 }
-
-void insereMesmoPadrao(int n, int b, int m){
-    Diretorio *diretorio = new Diretorio(b,m);
-
-    for(int i=1;i<=n;i++){
-        diretorio->insere(10*i);
-    }
-    cout<< "RESULTADO" << endl;
-    diretorio->imprime();
-}
-
 
 int main(){
-    // PARA OS VALORES TESTADOS, N=20, USE O TAMANHO DOS BALDES >= 6
-    //PARA N ALEATORIAS, USE B >=4 E MESMO PADRAO DE BITS B>=6
     int m,b,n, resposta;
     cout<< "Digite o tamanho a ser usado para os baldes" << endl;
     cin>> m;
@@ -40,12 +38,7 @@ int main(){
     cout<< "2) Digite 2 para inserir " << n << " valores com mesmo padrao" << endl;
     cin >> resposta;
 
-    if(resposta==1){
-        insereAleatorias(20,b,m);   // 20 valores aleatorios
-    }
-    else if(resposta==2){
-        insereMesmoPadrao(20,b,m);    // 20 valores com padrao semelhante
-    }
+    insere(20,b,m,resposta);
 
     return 0;
 }

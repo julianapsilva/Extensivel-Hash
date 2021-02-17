@@ -17,12 +17,13 @@ public:
     Diretorio(int bits, int tamBaldes);
     string hash(int k);
     int indice(string pseudo);
-    void insere(int k);
+    int insere(int k, int padrao);
     bool busca(int k);
     void divideBalde(Baldes *adividir);
     void duplica();
     string converteDecimal(int decimal);
     void imprime();
+    void fatorDeCarga();
 };
 
 

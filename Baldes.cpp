@@ -46,3 +46,13 @@ void Baldes::imprime(){
     }
 }
 
+int Baldes::jaExiste(string pseudo){
+    for(int i=0;i<ocupados;i++){
+        if(balde[i]==pseudo)
+            return 1;
+    }
+    return 0;
+}
+
+
+

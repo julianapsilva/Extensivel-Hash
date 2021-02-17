@@ -37,10 +37,14 @@ int Diretorio::indice(string pseudo){        // retorna o indice correspondente 
     return indice;
 }
 
-void Diretorio::insere(int k){
+int Diretorio::insere(int k, int padrao){
     string pseudo= hash(k);
-    int i= indice(pseudo);
+    if(padrao==2){  // convertendo os dois primeiros bits para a funcao que insere bits com mesmo padrao
+        pseudo[0]='1';
+        pseudo[1]='1';
+    }
 
+    int i= indice(pseudo);
     if(diretorio[i]->cheio()){
 
         if(dGlobal==diretorio[i]->getdLocal()){
@@ -53,8 +57,14 @@ void Diretorio::insere(int k){
     }
     }
 
-    diretorio[i]->insere(pseudo);
+    if(!diretorio[i]->jaExiste(pseudo)){
+        int i= indice(pseudo);  // caso tenha ocorrido uma duplicacao, verifica novamente o indice
+        diretorio[i]->insere(pseudo);
+        return 1;
+    }
 
+    else
+        return 0;
 }
 
 bool Diretorio::busca(int k){
@@ -77,18 +87,19 @@ void Diretorio::divideBalde(Baldes *adividir){
     for(int i=1;i<tamBaldes;i++){
        if((adividir->info(i).substr(0, adividir->getdLocal())!=var1)){
            var2=adividir->info(i).substr(0, adividir->getdLocal());
-       }}
-       for(int i=0;i<tamBaldes;i++){
-           if(adividir->info(i).substr(0, adividir->getdLocal())==var1){
+       }
+    }
+    for(int i=0;i<tamBaldes;i++){
+        if(adividir->info(i).substr(0, adividir->getdLocal())==var1){
                novo->insere(adividir->info(i));
            }
-           else if(var2!="") {
+        else if(var2!="") {
                aux->insere(adividir->info(i));
            }
        }
 
-       diretorio[indice(var1)]=novo;
-       diretorio[indice(var2)]=aux;
+       diretorio[indice(novo->info(0))]=novo;
+       diretorio[indice(aux->info(0))]=aux;
 }
 
 void Diretorio::duplica(){
@@ -144,6 +155,15 @@ void Diretorio::imprime(){
     }
 }
 
+void Diretorio::fatorDeCarga(){
+     int p=pow(2,dGlobal); int j=0;
+    for(int i=0;i<p;i++){
+        j+=diretorio[i]->ocupado();
+    }
 
+    //cout<< "VALORES OCUPADOS " << j << endl;
+   // cout<< "TAMANHO TOTAL " << p*tamBaldes << endl;
+    cout<< "FATOR DE CARGA " << j/(float)(p*tamBaldes) << endl;
+}
 
 
